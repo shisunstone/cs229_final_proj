@@ -26,8 +26,8 @@ def parse_data(circuit):
 
 def implement_models(X_train, X_test, Y_pit_int_train, Y_pit_int_test, plot):
     n = Y_pit_int_train[0].shape[0]
-    epochs_arr = np.arange(1, 11)
-    cce_loss = keras.losses.CategoricalCrossentropy()
+    epochs_arr = np.arange(1, 41)
+    cce_loss = keras.losses.BinaryCrossentropy(from_logits=False, label_smoothing=0.2, reduction='sum_over_batch_size')
 
     # Setting up plotting
     if plot:
@@ -36,15 +36,19 @@ def implement_models(X_train, X_test, Y_pit_int_train, Y_pit_int_test, plot):
         axs.set_xlabel('Epoch Number')
         axs.set_ylabel('Loss')
         main_plot, axs_main = plt.subplots(2, 2)
-        main_plot.suptitle('Comparative MAE')
+        main_plot.suptitle('Comparative evaluation metrics')
         axs_main[0, 0].set_xlabel('Epoch Number')
         axs_main[0, 0].set_ylabel('F1 Score')
+        axs_main[0, 0].set_title('F1 Score')
         axs_main[0, 1].set_xlabel('Epoch Number')
-        axs_main[0, 1].set_ylabel('Accuracy (AUC ROC)')
+        axs_main[0, 1].set_ylabel('Accuracy Score (AUC ROC)')
+        axs_main[0, 1].set_title('Accuracy')
         axs_main[1, 0].set_xlabel('Epoch Number')
-        axs_main[1, 0].set_ylabel('Recall')
+        axs_main[1, 0].set_ylabel('Recall Score')
+        axs_main[1, 0].set_title('Recall')
         axs_main[1, 1].set_xlabel('Epoch Number')
-        axs_main[1, 1].set_ylabel('Precision')
+        axs_main[1, 1].set_ylabel('Precision Score')
+        axs_main[1, 1].set_title('Precision')
 
     # -----------------------------------------------------------------------------------------------------------------#
 
@@ -66,7 +70,7 @@ def implement_models(X_train, X_test, Y_pit_int_train, Y_pit_int_test, plot):
                      bias_regularizer=regularizers.l2(1e-4),
                      activity_regularizer=regularizers.l2(1e-5)
                      ),
-        layers.Dense(n, activation='softmax',
+        layers.Dense(n, activation='sigmoid',
                      kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                      bias_regularizer=regularizers.l2(1e-4),
                      activity_regularizer=regularizers.l2(1e-5)
@@ -85,7 +89,7 @@ def implement_models(X_train, X_test, Y_pit_int_train, Y_pit_int_test, plot):
 
     print('Training DNN!')
     # Train the model
-    dnn_losses = dnn.fit(X_train, Y_pit_int_train, epochs=10, batch_size=32)
+    dnn_losses = dnn.fit(X_train, Y_pit_int_train, epochs=40, batch_size=32)
     print('Finished training DNN!')
 
     if plot:
@@ -123,7 +127,7 @@ def implement_models(X_train, X_test, Y_pit_int_train, Y_pit_int_test, plot):
                      bias_regularizer=regularizers.l2(1e-4),
                      activity_regularizer=regularizers.l2(1e-5)
                      ),
-        layers.Dense(n, activation='softmax', input_shape=(X_train.shape[1],),
+        layers.Dense(n, activation='sigmoid', input_shape=(X_train.shape[1],),
                      kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                      bias_regularizer=regularizers.l2(1e-4),
                      activity_regularizer=regularizers.l2(1e-5)
@@ -142,7 +146,7 @@ def implement_models(X_train, X_test, Y_pit_int_train, Y_pit_int_test, plot):
 
     print('Training RNN!')
     # Train the model
-    rnn_losses = rnn.fit(X_timed_train, Y_pit_int_train, epochs=10, batch_size=32)
+    rnn_losses = rnn.fit(X_timed_train, Y_pit_int_train, epochs=40, batch_size=32)
     print('Finished training RNN!')
 
     if plot:
@@ -193,7 +197,7 @@ def implement_models(X_train, X_test, Y_pit_int_train, Y_pit_int_test, plot):
 
     print('Training LSTM model!')
     # Train the model
-    lstm_losses = lstm.fit(X_timed_train, Y_pit_int_train, epochs=10, batch_size=32)
+    lstm_losses = lstm.fit(X_timed_train, Y_pit_int_train, epochs=40, batch_size=32)
     print('Fimished training LSTM model!')
     if plot:
         axs.plot(epochs_arr, lstm_losses.history['loss'], label='LSTM Loss')
@@ -242,7 +246,7 @@ def implement_models(X_train, X_test, Y_pit_int_train, Y_pit_int_test, plot):
                          keras.metrics.Recall(thresholds=0.5)])
     print('Training GRU model!')
     # Train the model
-    gru_losses = gru.fit(X_timed_train, Y_pit_int_train, epochs=10, batch_size=32)
+    gru_losses = gru.fit(X_timed_train, Y_pit_int_train, epochs=40, batch_size=32)
     print(gru_losses.history.keys())
     if plot:
         axs.plot(epochs_arr, gru_losses.history['loss'], label='GRU Loss')
@@ -282,26 +286,29 @@ def implement_models(X_train, X_test, Y_pit_int_train, Y_pit_int_test, plot):
 
     precision = keras.metrics.Precision()
     precision.update_state(Y_pit_int_test, proc_preds)
-    print(precision.result())
+    print('Precision:', float(precision.result()))
     f1 = keras.metrics.F1Score(average='weighted')
     f1.update_state(Y_pit_int_test, proc_preds)
-    print(f1.result())
+    print('F1:', float(f1.result()))
     accuracy = keras.metrics.Accuracy()
     accuracy.update_state(Y_pit_int_test, proc_preds)
-    print(accuracy.result())
+    print('Accuracy:', float(accuracy.result()))
+    recall = keras.metrics.Recall()
+    recall.update_state(Y_pit_int_test, proc_preds)
+    print('Recall:', float(recall.result()))
 
-    return dnn, rnn, lstm, gru, np.argmin([mae_dnn, mae_rnn, mae_lstm, mae_gru])
+    return dnn, rnn, lstm, gru, rf_regressor, np.argmin([mae_dnn, mae_rnn, mae_lstm, mae_gru])
 
 
 def predict_laps(year, driver, circuit, position, humidity, pressure, rain, tracktemp, windspeed, clear_cache=False,
-                 plot=False):
+                 plot=False, plot_comp=True):
     if clear_cache:
         ff1.Cache.clear_cache()
     circuit = circuit
 
     X_train, X_model_test, Y_pit_int_train, Y_pit_int_test, Y_pit_num_train, Y_pit_num_test = parse_data(circuit)
 
-    dnn, rnn, lstm, gru, model_idx = implement_models(X_train, X_model_test, Y_pit_int_train, Y_pit_int_test, plot)
+    dnn, rnn, lstm, gru, rf, model_idx = implement_models(X_train, X_model_test, Y_pit_int_train, Y_pit_int_test, plot)
 
     num_laps = Y_pit_int_train.shape[1]
     test_year = year
@@ -310,6 +317,7 @@ def predict_laps(year, driver, circuit, position, humidity, pressure, rain, trac
     test_rain = rain
     test_tt = tracktemp
     test_wind = windspeed
+
 
     if len(driver) == 3:
         code_bool = True
@@ -328,60 +336,77 @@ def predict_laps(year, driver, circuit, position, humidity, pressure, rain, trac
     X_test_dnn = X_test.reshape((-1, X_test.shape[0]))
 
     predictions_dnn = dnn.predict(X_test_dnn)[0]
-    cm_dnn = metrics.confusion_matrix(Y_test, parsing.process_laps(predictions_dnn, 0.3))
-    cm_dnn_d = metrics.ConfusionMatrixDisplay(confusion_matrix=cm_dnn, display_labels=[False, True])
-    cm_dnn_d.plot()
-    cm_dnn_d.ax_.set_title("DNN Confusion Matrix")
-    plt.show()
+    if plot_comp:
+        cm_dnn = metrics.confusion_matrix(Y_test, parsing.process_laps(predictions_dnn, 0.5))
+        cm_dnn_d = metrics.ConfusionMatrixDisplay(confusion_matrix=cm_dnn, display_labels=[False, True])
+        cm_dnn_d.plot()
+        cm_dnn_d.ax_.set_title("DNN Confusion Matrix")
+        plt.show()
     pits_dnn = (-predictions_dnn).argsort()
     pits_dnn_1 = parsing.prune_laps(pits_dnn)
 
     predictions_rnn = rnn.predict(X_test_rnn)[0]
-    cm_rnn = metrics.confusion_matrix(Y_test, parsing.process_laps(predictions_rnn, 0.3))
-    cm_rnn_d = metrics.ConfusionMatrixDisplay(confusion_matrix=cm_rnn, display_labels=[False, True])
-    cm_rnn_d.plot()
-    cm_rnn_d.ax_.set_title("RNN Confusion Matrix")
-    plt.show()
+    if plot_comp:
+        cm_rnn = metrics.confusion_matrix(Y_test, parsing.process_laps(predictions_rnn, 0.5))
+        cm_rnn_d = metrics.ConfusionMatrixDisplay(confusion_matrix=cm_rnn, display_labels=[False, True])
+        cm_rnn_d.plot()
+        cm_rnn_d.ax_.set_title("RNN Confusion Matrix")
+        plt.show()
     pits_rnn = (-predictions_rnn).argsort()
     pits_rnn_1 = parsing.prune_laps(pits_rnn)
 
     predictions_lstm = lstm.predict(X_test_rnn)[0]
-    cm_lstm = metrics.confusion_matrix(Y_test, parsing.process_laps(predictions_lstm, 0.5))
-    cm_lstm_d = metrics.ConfusionMatrixDisplay(confusion_matrix=cm_lstm, display_labels=[False, True])
-    cm_lstm_d.plot()
-    cm_lstm_d.ax_.set_title("LSTM Confusion Matrix")
-    plt.show()
+    if plot_comp:
+        cm_lstm = metrics.confusion_matrix(Y_test, parsing.process_laps(predictions_lstm, 0.5))
+        cm_lstm_d = metrics.ConfusionMatrixDisplay(confusion_matrix=cm_lstm, display_labels=[False, True])
+        cm_lstm_d.plot()
+        cm_lstm_d.ax_.set_title("LSTM Confusion Matrix")
+        plt.show()
     pits_lstm = (-predictions_lstm).argsort()
     pits_lstm_1 = parsing.prune_laps(pits_lstm)
 
     predictions_gru = gru.predict(X_test_rnn)[0]
-    cm_gru = metrics.confusion_matrix(Y_test, parsing.process_laps(predictions_gru, 0.5))
-    cm_gru_d = metrics.ConfusionMatrixDisplay(confusion_matrix=cm_gru, display_labels=[False, True])
-    cm_gru_d.plot()
-    cm_gru_d.ax_.set_title("GRU Confusion Matrix")
-    plt.show()
+    if plot_comp:
+        cm_gru = metrics.confusion_matrix(Y_test, parsing.process_laps(predictions_gru, 0.5))
+        cm_gru_d = metrics.ConfusionMatrixDisplay(confusion_matrix=cm_gru, display_labels=[False, True])
+        cm_gru_d.plot()
+        cm_gru_d.ax_.set_title("GRU Confusion Matrix")
+        plt.show()
     pits_gru = (-predictions_gru).argsort()
     pits_gru_1 = parsing.prune_laps(pits_gru)
 
-    pit_laps_lstm =  np.where(parsing.process_laps(predictions_lstm, 0.8) == 1)[0]
-    pit_laps_gru = np.where(parsing.process_laps(predictions_gru, 0.8) == 1)[0]
+    predictions_rf = rf.predict(X_test_dnn)[0]
+    if plot_comp:
+        cm_rf = metrics.confusion_matrix(Y_test, parsing.process_laps(predictions_rf, 0.3))
+        cm_rf_d = metrics.ConfusionMatrixDisplay(confusion_matrix=cm_rf, display_labels=[False, True])
+        cm_rf_d.plot()
+        cm_rf_d.ax_.set_title("RF Confusion Matrix")
+        plt.show()
+    pits_rf = (-predictions_rnn).argsort()
+    pits_rf_1 = parsing.prune_laps(pits_rf)
 
-    y_vals = np.concatenate((np.full(pit_laps_lstm.shape[0], 'LSTM'), np.full(pit_laps_gru.shape[0], 'GRU')))
+    if plot_comp:
+        pit_laps_lstm =  np.where(parsing.process_laps(predictions_lstm, 0.8) == 1)[0]
+        pit_laps_gru = np.where(parsing.process_laps(predictions_gru, 0.8) == 1)[0]
 
-    x_vals = np.concatenate((pit_laps_lstm, pit_laps_gru))
+        y_vals = np.concatenate((np.full(pit_laps_lstm.shape[0], 'LSTM'), np.full(pit_laps_gru.shape[0], 'GRU')))
 
-    plt.scatter(x_vals, y_vals)
+        x_vals = np.concatenate((pit_laps_lstm, pit_laps_gru))
 
-    plt.show()
+        plt.scatter(x_vals, y_vals)
+        plt.title('Pit Strategies of GRU vs LSTM')
+        plt.xlabel('Lap Number')
+        plt.ylabel('Model')
+        plt.show()
 
-    return pits_dnn_1, pits_rnn_1, pits_lstm_1, pits_gru_1, model_idx, num_laps
+    return pits_dnn_1, pits_rnn_1, pits_lstm_1, pits_gru_1, pits_rf_1, model_idx, num_laps
 
 
 def main():
 
     #  Input Test Information:
-    test_year = 2022
     test_driver = 'SAI'
+    test_year = 2022
     test_circuit = 'Silverstone'
     test_position = 1
     test_hum = 70
@@ -391,10 +416,11 @@ def main():
     test_wind = 5
     num_stops = 2
 
-    dnn_pred, rnn_pred, lstm_pred, gru_pred, model_idx, num_laps = \
+    dnn_pred, rnn_pred, lstm_pred, gru_pred, rf_pred, model_idx, num_laps = \
         predict_laps(test_year, test_driver, test_circuit, test_position,
-                     test_hum, test_press, test_rain, test_tt, test_wind, clear_cache=False, plot=False)
-    predictions = [dnn_pred, rnn_pred, lstm_pred, gru_pred]
+                     test_hum, test_press, test_rain, test_tt, test_wind,
+                     clear_cache=False, plot=True, plot_comp=True)
+    predictions = [dnn_pred, rnn_pred, lstm_pred, gru_pred, rf_pred]
     ideal_laps = list(predictions[2])
     ideal_stops = [ideal_laps[0]]
     while len(ideal_stops) < num_stops:
