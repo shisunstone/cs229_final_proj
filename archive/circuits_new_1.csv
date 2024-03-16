@@ -1,0 +1,29 @@
+﻿circuitId,circuitRef,name,location,country,n_corners,elev_change,max_alt,length,lat,lng,max_vel,url
+1,albert_park,Albert Park Grand Prix Circuit,Melbourne,Australia,16,2.6,10.1,5.278,-37.8497,144.968,341,http://en.wikipedia.org/wiki/Melbourne_Grand_Prix_Circuit
+2,bahrain,Bahrain International Circuit,Sakhir,Bahrain,15,16.9,0.9,5.412,26.0325,50.5106,329.6,http://en.wikipedia.org/wiki/Bahrain_International_Circuit
+3,catalunya,Circuit de Barcelona-Catalunya,MontmelÃ_,Spain,16,29.6,192.3,4.657,41.57,2.26111,322,http://en.wikipedia.org/wiki/Circuit_de_Barcelona-Catalunya
+4,istanbul,Istanbul Park,Istanbul,Turkey,14,25,57,5.338,40.9517,29.405,329.5,http://en.wikipedia.org/wiki/Istanbul_Park
+5,monaco,Circuit de Monaco,Monte-Carlo,Monaco,19,42,89.5,3.337,43.7347,7.42056,290,http://en.wikipedia.org/wiki/Circuit_de_Monaco
+6,villeneuve,Circuit Gilles Villeneuve,Montreal,Canada,14,5.2,17.8,4.361,45.5,-73.5228,315.5,http://en.wikipedia.org/wiki/Circuit_Gilles_Villeneuve
+7,silverstone,Silverstone Circuit,Silverstone,UK,18,11.3,207.5,5.891,52.0786,-1.01694,329.5,http://en.wikipedia.org/wiki/Silverstone_Circuit
+8,hockenheimring,Hockenheimring,Hockenheim,Germany,17,4.3,152.5,4.574,49.3278,8.56583,313,http://en.wikipedia.org/wiki/Hockenheimring
+9,hungaroring,Hungaroring,Budapest,Hungary,14,34.7,238.9,4.381,47.5789,19.2486,315,http://en.wikipedia.org/wiki/Hungaroring
+10,spa,Circuit de Spa-Francorchamps,Spa,Belgium,19,102.2,467.8,7.004,50.4372,5.97139,319.6,http://en.wikipedia.org/wiki/Circuit_de_Spa-Francorchamps
+11,monza,Autodromo Nazionale di Monza,Monza,Italy,11,12.8,153.2,5.793,45.6156,9.28111,350,http://en.wikipedia.org/wiki/Autodromo_Nazionale_Monza
+12,marina_bay,Marina Bay Street Circuit,Marina Bay,Singapore,23,5.3,23,4.94,1.2914,103.864,323,http://en.wikipedia.org/wiki/Marina_Bay_Street_Circuit
+13,shanghai,Shanghai International Circuit,Shanghai,China,16,7.4,21.1,5.451,31.3389,121.22,348,http://en.wikipedia.org/wiki/Shanghai_International_Circuit
+14,interlagos,AutÃ_dromo JosÃ© Carlos Pace,SÃ£o Paulo,Brazil,15,43,781.9,4.309,-23.7036,-46.6997,331,http://en.wikipedia.org/wiki/Aut%C3%B3dromo_Jos%C3%A9_Carlos_Pace
+15,suzuka,Suzuka Circuit,Suzuka,Japan,18,40.4,94.4,5.807,34.8431,136.541,328,http://en.wikipedia.org/wiki/Suzuka_Circuit
+16,rodriguez,AutÃ_dromo Hermanos RodrÃ_guez,Mexico City,Mexico,17,2.8,2229,4.304,19.4042,-99.0907,349,http://en.wikipedia.org/wiki/Aut%C3%B3dromo_Hermanos_Rodr%C3%ADguez
+17,ricard,Circuit Paul Ricard,Le Castellet,France,15,33,441,5.842,43.2506,5.79167,339.9,http://en.wikipedia.org/wiki/Paul_Ricard_Circuit
+18,zandvoort,Circuit Park Zandvoort,Zandvoort,Netherlands,14,7.92,3,4.259,52.3888,4.54092,330.7,http://en.wikipedia.org/wiki/Circuit_Zandvoort
+19,las_vegas,Las Vegas Street Circuit,Nevada,USA,17,25,620,6.201,36.1162,-115.174,350.5,"http://en.wikipedia.org/wiki/Las_Vegas,_Nevada"
+20,americas,Circuit of the Americas,Austin,USA,20,30.9,157.4,5.513,30.1328,-97.6411,325.3,http://en.wikipedia.org/wiki/Circuit_of_the_Americas
+21,red_bull_ring,Red Bull Ring,Spielburg,Austria,10,65,700,4.318,47.2197,14.7647,327.4,http://en.wikipedia.org/wiki/Red_Bull_Ring
+22,sochi,Sochi Autodrom,Sochi,Russia,18,1.9,23.3,5.848,43.4057,39.9578,326,http://en.wikipedia.org/wiki/Sochi_Autodrom
+23,BAK,Baku City Circuit,Baku,Azerbaijan,20,26.8,2.1,6.003,40.3725,49.8533,337,http://en.wikipedia.org/wiki/Baku_City_Circuit
+24,algarve,Algarve International Circuit,Portimao,Portugal,16,25,900,4.68,37.232,-8.632,331.1,https://en.wikipedia.org/wiki/Algarve_International_Circuit
+25,mugello,Autodromo Internazionale del Mugello,Florence,Italy,15,41,292,5.245,43.9975,11.371944,322.1,https://en.wikipedia.org/wiki/Mugello_Circuit
+26,jeddah,Jeddah Corniche Circuit,Jeddah,Saudi Arabia,27,25,12,6.174,21.631944,39.104444,330,https://en.wikipedia.org/wiki/Jeddah_Corniche_Circuit
+27,miami,Miami International Autodrome,Miami Gardens,USA,19,25,1.8,5.412,25.958056,-80.238889,320,https://en.wikipedia.org/wiki/Miami_International_Autodrome
+28,lusail,Lusail International Circuit,Lusail,Qatar,16,6.7,13,5.419,25.49,51.454167,342.6,https://en.wikipedia.org/wiki/Losail_International_Circuit
