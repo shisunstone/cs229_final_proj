@@ -66,11 +66,6 @@ def implement_models(X_train, X_test, Y_pit_int_train, Y_pit_int_test, plot):
                      bias_regularizer=regularizers.l2(1e-4),
                      activity_regularizer=regularizers.l2(1e-5)
                      ),
-        layers.Dense(32, activation='relu',
-                     kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
-                     bias_regularizer=regularizers.l2(1e-4),
-                     activity_regularizer=regularizers.l2(1e-5)
-                     ),
         layers.Dense(n, activation='softmax',
                      kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                      bias_regularizer=regularizers.l2(1e-4),
@@ -119,11 +114,6 @@ def implement_models(X_train, X_test, Y_pit_int_train, Y_pit_int_test, plot):
                      activity_regularizer=regularizers.l2(1e-5)
                      ),
         layers.Dense(64, activation='relu', input_shape=(X_train.shape[1],),
-                     kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
-                     bias_regularizer=regularizers.l2(1e-4),
-                     activity_regularizer=regularizers.l2(1e-5)
-                     ),
-        layers.Dense(32, activation='relu', input_shape=(X_train.shape[1],),
                      kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                      bias_regularizer=regularizers.l2(1e-4),
                      activity_regularizer=regularizers.l2(1e-5)
@@ -186,11 +176,6 @@ def implement_models(X_train, X_test, Y_pit_int_train, Y_pit_int_test, plot):
                      bias_regularizer=regularizers.l2(1e-4),
                      activity_regularizer=regularizers.l2(1e-5)
                      ),
-        layers.Dense(32, activation='relu', input_shape=(X_train.shape[1],),
-                     kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
-                     bias_regularizer=regularizers.l2(1e-4),
-                     activity_regularizer=regularizers.l2(1e-5)
-                     ),
         layers.Dense(n, activation='sigmoid', input_shape=(X_train.shape[1],),
                      kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                      bias_regularizer=regularizers.l2(1e-4),
@@ -232,11 +217,6 @@ def implement_models(X_train, X_test, Y_pit_int_train, Y_pit_int_test, plot):
                      activity_regularizer=regularizers.l2(1e-5)
                      ),
         layers.Dense(64, activation='relu', input_shape=(X_train.shape[1],),
-                     kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
-                     bias_regularizer=regularizers.l2(1e-4),
-                     activity_regularizer=regularizers.l2(1e-5)
-                     ),
-        layers.Dense(32, activation='relu', input_shape=(X_train.shape[1],),
                      kernel_regularizer=regularizers.l1_l2(l1=1e-5, l2=1e-4),
                      bias_regularizer=regularizers.l2(1e-4),
                      activity_regularizer=regularizers.l2(1e-5)
