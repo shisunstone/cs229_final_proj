@@ -1,2 +1,3 @@
-# cs229_final_proj
+# cs229 final project!
 
+# Note that _pycache_ is not uploaded as it is too large...
